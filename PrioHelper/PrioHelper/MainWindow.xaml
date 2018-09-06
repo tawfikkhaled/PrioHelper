@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid Name="MyDataGrid" ItemsSource="{Binding}" 
+          CanUserReorderColumns="True" CanUserResizeColumns="True" 
+          CanUserResizeRows="False" CanUserSortColumns="True"
+          HorizontalAlignment="Left" Height="171" Margin="35,209,0,0" VerticalAlignment="Top" Width="705"
+            AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name"  Binding="{Binding NAME}" Width="250"/>
+                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE1}" Width="150"/>
+                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE2}" Width="150"/>
+                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE3}" Width="150"/>
+                
+            </DataGrid.Columns>
+            
+
+        </DataGrid>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name ="EnteredToDo" HorizontalAlignment="Left" Height="36" Margin="49,153,0,0" TextWrapping="Wrap" Text="255 255 255" VerticalAlignment="Top" Width="335" RenderTransformOrigin="0.5,0.5">
+        </TextBox>
+        <Button Content="Add To Do" HorizontalAlignment="Left" Height="36" Margin="414,153,0,0" VerticalAlignment="Top" Width="288" Click="Button_Click"/>
+
     </Grid>
 </Window>

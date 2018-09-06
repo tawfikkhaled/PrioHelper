@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace PrioHelper
 {
@@ -20,9 +21,22 @@ namespace PrioHelper
     /// </summary>
     public partial class MainWindow : Window
     {
+        ObservableCollection<SUJET> toDoObservable;
         public MainWindow()
         {
             InitializeComponent();
+            var toDos = new List<SUJET>();
+            toDos = SqlHelper.GetAllToDos();
+            toDoObservable = new ObservableCollection<SUJET>(toDos);
+            MyDataGrid.DataContext = toDoObservable;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string[] criterias = EnteredToDo.Text.Split(' ');
+            SqlHelper.AddSubject(new SUJET { CRITERE1 = byte.Parse(criterias[0]), CRITERE2 = byte.Parse(criterias[1]), CRITERE3 = byte.Parse(criterias[2]) });
+            var toDos = SqlHelper.GetAllToDos();
+            toDoObservable.Add(new SUJET { CRITERE1 = byte.Parse(criterias[0]), CRITERE2 = byte.Parse(criterias[1]), CRITERE3 = byte.Parse(criterias[2]) });
         }
     }
 }

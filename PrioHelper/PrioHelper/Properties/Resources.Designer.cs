@@ -7,7 +7,7 @@
 //     le code est régénéré.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
+using System;
 namespace PrioHelper.Properties
 {
 
@@ -32,6 +32,7 @@ namespace PrioHelper.Properties
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources()
         {
+            AppDomain.CurrentDomain.SetData("DataDirectory", @"D:\1Csharp\PrioHelper\PrioHelper\PrioHelper");
         }
 
         /// <summary>
