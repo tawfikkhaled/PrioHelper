@@ -5,27 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PrioHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="1066">
     <Grid>
-        <DataGrid Name="MyDataGrid" ItemsSource="{Binding}" 
+        <TabControl Name="tabDynamic" Canvas.Top="24" SelectionChanged="tabDynamic_SelectionChanged" Margin="0,39,0.2,0.4">
+        <!--TabControl Name="tabDynamic" Canvas.Top="24" ItemsSource="{Binding}" SelectionChanged="tabDynamic_SelectionChanged" Margin="0,39,0.2,0.4"-->
+                <TabControl.Resources>
+                <DataTemplate x:Key="TabHeader" DataType="TabItem">
+                    <DockPanel>
+                        <Button Name="btnDelete" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="0" Click="btnDelete_Click" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Name}">
+                            <Image Source="/delete.png" Height="11" Width="11"></Image>
+                        </Button>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Header}" />
+                    </DockPanel>
+                </DataTemplate>
+                <Style TargetType="TextBox">
+                    <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                    <Setter Property="AcceptsReturn" Value="True"></Setter>
+                    <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
+                    <Setter Property="MaxLines" Value="5000"></Setter>
+                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"></Setter>
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"></Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Name="tab1" Header="TabItem">
+                <Grid>
+
+
+                    <DataGrid Name="MyDataGrid" ItemsSource="{Binding}" 
           CanUserReorderColumns="True" CanUserResizeColumns="True" 
           CanUserResizeRows="False" CanUserSortColumns="True"
-          HorizontalAlignment="Left" Height="171" Margin="35,209,0,0" VerticalAlignment="Top" Width="705"
+          HorizontalAlignment="Left" Height="248" Margin="35,292,0,0" VerticalAlignment="Top" Width="981"
             AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name"  Binding="{Binding NAME}" Width="250"/>
-                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE1}" Width="150"/>
-                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE2}" Width="150"/>
-                <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE3}" Width="150"/>
-                
-            </DataGrid.Columns>
-            
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name"  Binding="{Binding NAME}" Width="250"/>
+                            <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE1}" Width="150"/>
+                            <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE2}" Width="150"/>
+                            <DataGridTextColumn Header="Name"  Binding="{Binding CRITERE3}" Width="150"/>
 
-        </DataGrid>
-        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name ="EnteredToDo" HorizontalAlignment="Left" Height="36" Margin="49,153,0,0" TextWrapping="Wrap" Text="255 255 255" VerticalAlignment="Top" Width="335" RenderTransformOrigin="0.5,0.5">
-        </TextBox>
-        <Button Content="Add To Do" HorizontalAlignment="Left" Height="36" Margin="414,153,0,0" VerticalAlignment="Top" Width="288" Click="Button_Click"/>
+                        </DataGrid.Columns>
 
+
+
+                    </DataGrid>
+                    <TextBox Name ="EnteredToDo" HorizontalAlignment="Left" Height="32" Margin="35,231,0,0" TextWrapping="Wrap" Text="255 255 255" VerticalAlignment="Top" Width="561" RenderTransformOrigin="0.5,0.5">
+                    </TextBox>
+                    <Button Content="Add To Do" HorizontalAlignment="Left" Height="32" Margin="631,231,0,0" VerticalAlignment="Top" Width="161" Click="Button_Click"/>
+                    <Canvas HorizontalAlignment="Left" Height="145" Margin="258,78,0,0" VerticalAlignment="Top" Width="139"/>
+                    <Canvas Name="MyCanvasChart" Background="AliceBlue" HorizontalAlignment="Left" Height="173" Margin="35,27,0,0" VerticalAlignment="Top" Width="561">
+
+
+
+
+
+
+                    </Canvas>
+                    <Canvas Name="MyCanvasBar" Background="AntiqueWhite" HorizontalAlignment="Left" Height="173" Margin="631,27,0,0" VerticalAlignment="Top" Width="385"/>
+                    <Button Name="DrowButton" Content="Drow" HorizontalAlignment="Left" Margin="815,231,0,0" VerticalAlignment="Top" Width="201" Height="32" Click="DrowButton_Click"/>
+                    <TextBox HorizontalAlignment="Left" Height="0" Margin="307,73,-307,-73" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="0"/>
+
+                </Grid>
+
+            </TabItem>
+            <TabItem Name="tab2" Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+        <TextBox Name="Screen" KeyDown="Key_Pressed" HorizontalAlignment="Left" Height="21" Margin="476,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="242"/>
+        <TextBlock  HorizontalAlignment="Left" Margin="247,10,0,0" TextWrapping="Wrap" Text="Taper le nom d'un écran puis entree" VerticalAlignment="Top" Height="21" Width="158"/>
     </Grid>
 </Window>
