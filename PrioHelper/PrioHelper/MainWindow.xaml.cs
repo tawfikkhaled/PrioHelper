@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace PrioHelper
 {
@@ -25,8 +24,10 @@ namespace PrioHelper
         private List<TabItem> _tabItems;
         private List<TabItem> _allTabItems;
         private TabItem _tabAdd;
+        private List<string> _screens = new List<string> {"", "s2" };
         AppModelPresenter appModelPresenter;
         ObservableCollection<SUJET> toDoObservable;
+        ObservableCollection<PercentageScreenClass> percentsObservable;
         public MainWindow()
         {
 
@@ -35,13 +36,23 @@ namespace PrioHelper
             try
             {
                 InitializeComponent();
+                
+
                 var toDos = new List<SUJET>();
                 toDos = SqlHelper.GetAllToDos();
                 toDoObservable = new ObservableCollection<SUJET>(toDos);
                 MyDataGrid.DataContext = toDoObservable;
+
+                var percents = new List<PercentageScreenClass>();
+                percentsObservable = new ObservableCollection<PercentageScreenClass>(percents);
+                DataPercentage.DataContext = percentsObservable;
+
+
                 // initialize tabItem array
                 _tabItems = new List<TabItem>();
+                 
 
+               
                 // add a tabItem with + in header 
                 TabItem tabAdd = new TabItem();
                 tabAdd.Header = "+";
@@ -62,6 +73,10 @@ namespace PrioHelper
                 tabDynamic.DataContext =_tabItems;
 
                 tabDynamic.SelectedIndex = 0;
+                _screens.Add("PercentageTab");
+                //_tabItems.ForEach(x => _screens.Add(x.Header.ToString()));
+                ScreenComboBox.DataContext = _screens;
+
             }
             catch (Exception ex)
             {
@@ -88,7 +103,8 @@ namespace PrioHelper
             _tabItems.Insert(count - 1, tab);
             return tab;
         }
-        private void AddTabItem(TabItem tabItem)
+
+            private void AddTabItem(TabItem tabItem)
         {
             tabItem.HeaderTemplate = tabDynamic.FindResource("TabHeader") as DataTemplate;
             int count = _tabItems.Count;
@@ -101,7 +117,7 @@ namespace PrioHelper
             {
                 foreach( var item in _allTabItems) 
                 {
-                    if (item.Name == Screen.Text)
+                    if (item.Name == ScreenComboBox.Text) 
                     {
                         // clear tab control binding
                         tabDynamic.DataContext = null;
@@ -117,8 +133,80 @@ namespace PrioHelper
                     }
                 }
             }
+            else
+            {
+                ScreenComboBox.Items.Filter += a =>
+                {
+                    if (a.ToString().ToLower().StartsWith(ScreenComboBox.Text.ToLower()))
+                    {
+                        return true;
+                    }
+                    return false;
+                };
+                ScreenComboBox.IsDropDownOpen = true;
+            }
         }
 
+        private void DataPercentageChanged(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var list = percentsObservable.ToList();
+                double quantity = 0;
+                foreach (var el in list)
+                {
+                    if (el.Quantity != 0 && el.Percentage != 0)
+                    {
+                        quantity = el.Quantity * 100 / el.Percentage;
+                    }
+                }
+
+                double percentage = 0;
+                if (quantity == 0)
+                {
+                    foreach (var el in list)
+                    {
+                        percentage += el.Percentage;
+                    }
+                    foreach (var el in list)
+                    {
+                        if (el.Percentage == 0)
+                            el.Percentage = percentage;
+                    }
+                    foreach (var el in list)
+                    {
+                        if (el.Quantity != 0 && el.Percentage != 0)
+                        {
+                            quantity = el.Quantity * 100 / el.Percentage;
+                        }
+                    }
+                }
+
+
+                if (quantity != 0)
+                {
+                    foreach (var el in list)
+                    {
+                        if (el.Percentage != 0)
+                        {
+                            el.Quantity = el.Percentage / 100 * quantity;
+                        }
+                        if (el.Quantity != 0)
+                        {
+                            el.Percentage = el.Quantity / quantity * 100;
+                        }
+                    }
+
+                }
+                percentsObservable.Clear();
+                foreach (var el in list)
+                {
+                    percentsObservable.Add(el);
+                }
+            }
+                
+
+        }
         // Remove the clicked tab.
         private void TabItem_RemoveClicked(object sender,
         MouseButtonEventArgs e)

@@ -7,9 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1066">
     <Grid>
-        <TabControl Name="tabDynamic" Canvas.Top="24" SelectionChanged="tabDynamic_SelectionChanged" Margin="0,39,0.2,0.4">
-        <!--TabControl Name="tabDynamic" Canvas.Top="24" ItemsSource="{Binding}" SelectionChanged="tabDynamic_SelectionChanged" Margin="0,39,0.2,0.4"-->
-                <TabControl.Resources>
+        <TabControl Name="tabDynamic" Canvas.Top="24" SelectionChanged="tabDynamic_SelectionChanged" ItemsSource="{Binding}" Margin="0,39,0.2,0.4">
+            <!--TabControl Name="tabDynamic" Canvas.Top="24" ItemsSource="{Binding}" SelectionChanged="tabDynamic_SelectionChanged" Margin="0,39,0.2,0.4"-->
+            <TabControl.Resources>
                 <DataTemplate x:Key="TabHeader" DataType="TabItem">
                     <DockPanel>
                         <Button Name="btnDelete" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="0" Click="btnDelete_Click" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Name}">
@@ -70,8 +70,31 @@
             <TabItem Name="tab2" Header="TabItem">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
+            <TabItem Name="PercentageTab" Header="Percentage Tab">
+                <DataGrid Name="DataPercentage" KeyUp="DataPercentageChanged" ItemsSource="{Binding}" 
+                  CanUserReorderColumns="True" CanUserResizeColumns="True" 
+                  CanUserResizeRows="False" CanUserSortColumns="True"
+                  HorizontalAlignment="Left" Height="341" Margin="4,0,0,57.2" VerticalAlignment="Bottom" Width="938"
+                  AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Quantity"  Binding="{Binding Quantity}" Width="250"/>
+                        <DataGridTextColumn Header="Percentage"  Binding="{Binding Percentage}" Width="150"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
         </TabControl>
+        <!--ComboBox IsEditable="True" 
+     Text="{Binding Path=ZipCode, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+     ItemsSource="{Binding Path=PostalCodes}" 
+     IsTextSearchEnabled="False" 
+     behaviors:AttachedMaxLength.ChildTextBoxMaxLength="{Binding Path=ZipCodeMaxLength}">
+            <i:Interaction.Behaviors>
+                <behaviors:FilteredComboBoxBehavior FilterMode="StartsWith"/>
+            </i:Interaction.Behaviors>
+        <ComboBox/-->
         <TextBox Name="Screen" KeyDown="Key_Pressed" HorizontalAlignment="Left" Height="21" Margin="476,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="242"/>
         <TextBlock  HorizontalAlignment="Left" Margin="247,10,0,0" TextWrapping="Wrap" Text="Taper le nom d'un écran puis entree" VerticalAlignment="Top" Height="21" Width="158"/>
+        <ComboBox Name="ScreenComboBox"  KeyUp="Key_Pressed" IsEditable="True"  ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="794,10,0,0" VerticalAlignment="Top" Width="120" Height="21"/>
     </Grid>
 </Window>
